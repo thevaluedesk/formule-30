@@ -255,15 +255,17 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
   font-size:13.5px;transition:transform .3s;max-width:88vw;text-align:center}
 #toast-global.actif{transform:translateX(-50%) translateY(0)}
 .note-bas{color:#57508a;font-size:11.5px;text-align:center;margin-top:22px;line-height:1.8}
-.grille-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:430px;margin:0 auto}
-.grille-2 .btn{margin:0}
+.grille-2{display:flex;flex-direction:column;align-items:center;gap:10px;margin:16px auto 0;width:100%}
+.grille-2 .btn{margin:0;width:min(100%,320px)}
+.mot-anniv{color:var(--or);text-align:center;margin:16px auto 6px;max-width:400px}
+.mot-anniv p{font-size:14.5px;line-height:1.75;text-wrap:balance;margin-top:10px}
+.mot-anniv .signature{font-style:italic;font-size:15px;color:var(--blanc);margin-top:12px;letter-spacing:.08em}
 #astuce-paysage{display:none;position:absolute;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);
   color:var(--gris);font-size:12.5px;background:rgba(5,2,18,.7);border:1px solid var(--bord);border-radius:999px;padding:8px 16px;
   white-space:nowrap;z-index:9;pointer-events:none}
 @media (orientation:portrait){#astuce-paysage{display:block}}
 @media (max-width:520px){
   .compte .bloc{min-width:72px}
-  .grille-2{grid-template-columns:1fr}
 }
 /* Écrans de contenu : retour dans le flux dès que le titre risque de le chevaucher */
 @media (max-width:900px){
@@ -494,9 +496,9 @@ const CONFIG = {
     { titre:'Dubaï', annee:'2 ans de V.I.E',
       texte:"2 ans de V.I.E, la marina, le désert, un pote qui traverse la planète pour venir te voir. Et le rituel du vieux Dubaï : la visite chez Chital, tailleur indien, pour repartir en costume sur mesure.", art:'dubai' },
     { titre:'Cargèse', annee:'Tous les étés',
-      texte:"Le golfe, le bateau, le wakeboard, le jet-ski. Le QG d'été, depuis toujours et pour toujours.", art:'plage' },
-    { titre:'42,195 km', annee:'Les marathons',
-      texte:"Des marathons finis ensemble. Les jambes ont oublié, la fierté jamais.", art:'marathon' },
+      texte:"Le golfe, le bateau, le wakeboard, le jet-ski, Lucien et Dragacci dans les parages. Le QG d'été, depuis toujours et pour toujours. Et merci à Claude d'avoir déniché ce coin de paradis.", art:'plage' },
+    { titre:'42,195 km', annee:'Les défis sportifs',
+      texte:"Des marathons chacun de son côté, un Iron-Man pour Matthias, et le même goût du défi depuis toujours. Les jambes ont oublié, la fierté jamais.", art:'marathon' },
     { titre:'La moule d\'or', annee:'Export international',
       texte:"Pendant que Louis vend du digital, Matthias exporte la moule aux 4 coins du monde. Chacun son empire.", art:'moule' },
     { titre:'30 ans', annee:'30 août 2026',
@@ -1029,6 +1031,8 @@ const NIVEAUX=[
     ciel:['#4ec3e8','#ffd9a0'], soleil:'#ffe9b0', brume:'#bfe8f2',
     route:['#707078','#696971'], herbe:['#e2c489','#d8ba7f'], rumble:['#f4f1ff','#e8332a'], ligne:'#f4f1ff',
     bpm:122, root:38.9,
+    cp1:'LE PONTON', cp1Couleur:'#0e6ba8', toastCp1:'LUCIEN ET DRAGACCI À BORD !',
+    radioCp1:"Arrêt au ponton : Lucien et Dragacci montent dans le Q3 !",
     decor:['palmier','parasol','rocher','bateau','panneau:CARGÈSE PLAGE|WAKEBOARD 500 m:#0e6ba8:#ffffff','parasol','rocher'],
     voitures:[['camping',0.30],['scooter',0.24]] },
   { id:'marathon', nom:'Le Marathon', annee:'42,195 km',
@@ -1421,7 +1425,12 @@ const RACE={
           +'<p>'+S.texte+'</p></div>';
       html+='<p class="detail">📻 « '+CONFIG.radios[this.iNiveau]+' »</p>';
       if(dernier){
-        html+='<p class="detail" style="color:var(--or)">Joyeux anniversaire Matthias. 30 ans, premier step.<br>Tout le bonheur du monde, et que tous tes rêves se réalisent.<br>La capsule 2056 t\'attend au paddock. 🍾</p>';
+        html+='<div class="mot-anniv">'
+            +'<p>Joyeux anniversaire mon pote. 30 ans, le premier step.</p>'
+            +'<p>Je te souhaite tout le bonheur du monde : que tu réalises tous tes rêves, et que tu sois heureux.</p>'
+            +'<p>De la 5ᵉ au Collège de Marcq jusqu\'à cette ligne d\'arrivée, on n\'a rien lâché. La capsule t\'attend au paddock : rendez-vous en 2056 pour l\'ouvrir ensemble. 🍾</p>'
+            +'<p class="signature">Louis</p>'
+            +'</div>';
       }
       html+='<div class="grille-2"><button class="btn petit" id="btn-rejouer">Rejouer</button>'
           +'<button class="btn petit rose" id="btn-suite">'+(dernier?'Voir la capsule':'Continuer')+'</button></div>';
