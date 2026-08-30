@@ -469,8 +469,8 @@ const CONFIG = {
   souvenirs: [
     { titre:'La rencontre', annee:'Collège de Marcq · 5ᵉ',
       texte:"Un redoublement stratégique en 5ᵉ, et la meilleure chose qui soit jamais arrivée à cette classe. Personne ne savait encore que ça durerait toute une vie.", art:'ecole' },
-    { titre:'Dubai', annee:'2 ans de V.I.E',
-      texte:"L'expatriation, la marina, le désert, et un pote qui traverse la planète plusieurs fois pour venir te voir. La démesure, à la hauteur de l'amitié.", art:'dubai' },
+    { titre:'Dubaï', annee:'2 ans de V.I.E',
+      texte:"2 ans de V.I.E, la marina, le désert, un pote qui traverse la planète pour venir te voir. Et le rituel du vieux Dubaï : la visite chez Chital, tailleur indien, pour repartir en costume sur mesure.", art:'dubai' },
     { titre:'Cargèse', annee:'Tous les étés',
       texte:"Le golfe, le bateau, le wakeboard, le jet-ski. Le QG d'été, depuis toujours et pour toujours.", art:'plage' },
     { titre:'42,195 km', annee:'Les marathons',
@@ -484,7 +484,7 @@ const CONFIG = {
   /* Messages radio de fin de course */
   radios: [
     "La sonnerie de 8h a retenti. Toi, tu étais déjà en pole.",
-    "Mode qualif dans la marina. Le taxi n'a toujours rien compris.",
+    "Mode qualif dans la marina, et pas un pli sur les costumes de chez Chital.",
     "Secteur violet entre la plage et le ponton. Le jet-ski est jaloux.",
     "42,195 km, boîte à gants pleine de gels. Ravito validé.",
     "Convoi doublé, cargaison sauve. La moule arrivera à l'heure.",
@@ -860,6 +860,45 @@ function construireSprites(){
     x.fillStyle='#d21f3c';x.fillRect(44,22,16,6);
     x.fillStyle='#20242c';x.font='900 9px Arial';x.textAlign='center';x.fillText('C',30,20);
   })};
+  /* la boutique de Chital, tailleur du vieux Dubaï */
+  SPR.chital={worldW:1900,img:canvasPeint(240,170,(x)=>{
+    /* murs sable du vieux Dubaï + poutres en bois */
+    x.fillStyle='#e8dcc0';x.fillRect(10,42,220,128);
+    x.fillStyle='#d8c9a6';x.fillRect(10,42,10,128);
+    x.fillStyle='#b59a6a';x.fillRect(4,34,232,10);
+    x.fillStyle='#7a5a30';for(let i=0;i<6;i++)x.fillRect(20+i*38,26,10,8);
+    /* enseigne verte et or */
+    x.fillStyle='#0f3b25';x.fillRect(22,48,196,36);
+    x.strokeStyle='#f2d98c';x.lineWidth=3;x.strokeRect(25,51,190,30);
+    x.fillStyle='#f2d98c';x.font='900 24px Georgia';x.textAlign='center';x.fillText('CHITAL',120,74);
+    x.fillStyle='#5a4a30';x.font='800 11px Arial';x.fillText('TAILLEUR · COSTUMES SUR MESURE',120,98);
+    /* auvent rayé */
+    for(let i=0;i<20;i++){x.fillStyle=i%2?'#8a2a2a':'#f2ead2';x.fillRect(18+i*10.2,102,10.2,9);}
+    /* vitrines avec costumes + porte en arche */
+    const vitrine=(vx)=>{
+      x.fillStyle='#243244';x.fillRect(vx,114,50,52);
+      x.strokeStyle='#7a5a30';x.lineWidth=3;x.strokeRect(vx,114,50,52);
+      x.fillStyle='#141e38';x.fillRect(vx+15,124,20,34);
+      x.fillRect(vx+9,124,8,26);x.fillRect(vx+33,124,8,26);
+      x.fillStyle='#f4f1ff';x.beginPath();x.moveTo(vx+25,124);x.lineTo(vx+19,138);x.lineTo(vx+31,138);x.closePath();x.fill();
+      x.fillStyle='#8a1a2a';x.fillRect(vx+23,128,4,12);
+    };
+    vitrine(26);vitrine(164);
+    x.fillStyle='#3a2a1a';x.beginPath();x.moveTo(98,166);x.lineTo(98,132);x.arc(120,132,22,Math.PI,0);x.lineTo(142,166);x.closePath();x.fill();
+    x.fillStyle='#c9a227';x.beginPath();x.arc(134,150,2.5,0,7);x.fill();
+  })};
+  /* costume sur cintre, à récupérer chez Chital */
+  SPR.costume={worldW:340,img:canvasPeint(56,72,(x)=>{
+    x.strokeStyle='#c9a227';x.lineWidth=3;
+    x.beginPath();x.arc(28,8,5,0.4,Math.PI*1.4);x.stroke();
+    x.beginPath();x.moveTo(28,13);x.lineTo(28,18);x.lineTo(6,28);x.moveTo(28,18);x.lineTo(50,28);x.stroke();
+    x.fillStyle='#141e38';
+    x.beginPath();x.moveTo(6,28);x.lineTo(16,24);x.lineTo(28,30);x.lineTo(40,24);x.lineTo(50,28);
+    x.lineTo(46,68);x.lineTo(10,68);x.closePath();x.fill();
+    x.fillStyle='#1e2a4e';x.fillRect(6,28,9,34);x.fillRect(41,28,9,34);
+    x.fillStyle='#f4f1ff';x.beginPath();x.moveTo(28,30);x.lineTo(20,46);x.lineTo(28,60);x.lineTo(36,46);x.closePath();x.fill();
+    x.fillStyle='#8a1a2a';x.fillRect(25.5,34,5,18);
+  })};
   /* avatars pilotes (menu, comparateur) */
   SPR.avatarM=spriteDepuisGrille([
     "..WWWWWWWW..",
@@ -927,13 +966,15 @@ const NIVEAUX=[
     bpm:118, root:36.7,
     decor:['college','arbre','panneau:COLLÈGE DE MARCQ|SORTIE 5ᵉB:#1f4f9d:#ffffff','arbre','panneau:CANTINE|FRITES LE JEUDI:#e8892b:#20242c'],
     voitures:[['bus',0.30],['scooter',0.20]] },
-  { id:'dubai', nom:'Marina de Dubai', annee:'2 ans de V.I.E',
-    desc:"Nuit dorée, tours infinies, taxis kamikazes. Mode qualif autorisé.",
+  { id:'dubai', nom:'Marina de Dubaï', annee:'2 ans de V.I.E',
+    desc:"Nuit dorée, tours infinies, taxis kamikazes. Au programme : un détour chez Chital pour récupérer les costumes.",
     couleur:'#ffb340', seed:20180415, longueur:1250, maxVitesse:0.95, trafic:14, temps:26,
     ciel:['#1b0a3c','#e78a3c'], soleil:'#ffb340', brume:'#3a1c4e',
     route:['#3d3a45','#37343f'], herbe:['#c8a45e','#bd9954'], rumble:['#f4f1ff','#d21f3c'], ligne:'#ffd98c',
     bpm:124, root:41.2,
-    decor:['tour','burj','palmier','panneau:DUBAI MARINA:#141b33:#ffd98c','tour','palmier','panneau:CALLAWAY:#0f3b25:#ffffff'],
+    cp1:'DÉTOUR CHEZ CHITAL', cp1Couleur:'#0f3b25', toastCp1:'COSTUMES RÉCUPÉRÉS !',
+    radioCp1:"Détour dans le vieux Dubaï : Chital nous attend, les costumes sont prêts.",
+    decor:['tour','burj','palmier','panneau:DUBAI MARINA:#141b33:#ffd98c','tour','palmier','panneau:CALLAWAY:#0f3b25:#ffffff','panneau:CHITAL 2 KM|VOS COSTUMES SONT PRÊTS:#0f3b25:#f2d98c'],
     voitures:[['taxi',0.42],['supercar',0.58]] },
   { id:'cargese', nom:'Golfe de Cargèse', annee:'Tous les étés',
     desc:"La route de la plage, les parasols, le bateau qui attend. Virages en épingle au-dessus de l'eau.",
@@ -1065,9 +1106,16 @@ const RACE={
     }
     /* arches */
     this.segments[6].sprites.push({spr:SPR.arche('DÉPART · '+N.nom.toUpperCase(),'#1f9dd8'),off:0});
-    this.segments[n3].sprites.push({spr:SPR.arche(N.id==='marathon'?'RAVITO · KM 14':'SECTEUR 1','#38a169'),off:0});
-    this.segments[n3*2].sprites.push({spr:SPR.arche(N.id==='marathon'?'RAVITO · KM 28':'SECTEUR 2','#e8892b'),off:0});
+    this.segments[n3].sprites.push({spr:SPR.arche(N.cp1||(N.id==='marathon'?'RAVITO · KM 14':'SECTEUR 1'),N.cp1Couleur||'#38a169'),off:0});
+    this.segments[n3*2].sprites.push({spr:SPR.arche(N.cp2||(N.id==='marathon'?'RAVITO · KM 28':'SECTEUR 2'),'#e8892b'),off:0});
     this.segments[this.segments.length-6].sprites.push({spr:SPR.arche('ARRIVÉE','#d21f3c'),off:0});
+    /* le détour chez Chital : la boutique du tailleur et les costumes à récupérer */
+    if(N.id==='dubai'){
+      this.segments[n3-4].sprites.push({spr:SPR.chital,off:-2.2});
+      this.segments[n3+2].sprites.push({spr:SPR.chital,off:2.1});
+      this.segments[n3+7].sprites.push({spr:SPR.costume,off:-0.4,bonus:true,gain:5,toast:'Costume Chital sur mesure !'});
+      this.segments[n3+12].sprites.push({spr:SPR.costume,off:0.4,bonus:true,gain:5,toast:'Costume Chital sur mesure !'});
+    }
 
     /* trafic */
     this.voitures=[];
@@ -1214,8 +1262,10 @@ const RACE={
       const s=this.segmentDe(this.position+this.playerZ);
       for(const sp of s.sprites){
         if(sp.bonus&&!sp.pris&&Math.abs(this.playerX-sp.off)<0.42){
-          sp.pris=true;this.temps+=3;Audio30.bip(1320,0.12,'square',0.2);Audio30.bip(1760,0.15,'square',0.18);
-          toastCourse('+3 s · Casquette Callaway !');
+          sp.pris=true;
+          const gain=sp.gain||3;
+          this.temps+=gain;Audio30.bip(1320,0.12,'square',0.2);Audio30.bip(1760,0.15,'square',0.18);
+          toastCourse('+'+gain+' s · '+(sp.toast||'Casquette Callaway !'));
         }
       }
     }
@@ -1247,9 +1297,10 @@ const RACE={
       const bonus=this.niveau.id==='marathon'?14:10;
       this.temps+=bonus;this.prochainCp++;
       Audio30.bip(990,0.1,'square',0.2);Audio30.bip(1320,0.14,'square',0.2);
-      toastCourse((this.niveau.id==='marathon'?'RAVITO ! ':'SECTEUR VALIDÉ ! ')+'+'+bonus+' s');
-      if(this.prochainCp===1)radio("Beau rythme. Continue comme ça, gestion.");
-      if(this.prochainCp===2)radio("Dernier secteur. Tout ce que tu as !");
+      const etiquette=(this.prochainCp===1&&this.niveau.toastCp1)||(this.niveau.id==='marathon'?'RAVITO !':'SECTEUR VALIDÉ !');
+      toastCourse(etiquette+' +'+bonus+' s');
+      if(this.prochainCp===1)radio(this.niveau.radioCp1||"Beau rythme. Continue comme ça, gestion.");
+      if(this.prochainCp===2)radio(this.niveau.radioCp2||"Dernier secteur. Tout ce que tu as !");
     }
 
     /* avancement */

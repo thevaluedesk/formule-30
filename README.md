@@ -15,11 +15,12 @@ aucun serveur, ça marche même hors ligne. La musique techno est générée par
 - **iPhone / mobile** : toucher la moitié gauche ou droite de l'écran pour tourner, l'accélération est automatique. En paysage c'est encore mieux.
 - Sortir de la piste fait perdre de la vitesse. Les casquettes Callaway sur la route donnent +3 s.
 - Chaque secteur validé donne +10 s (+14 s aux ravitos du marathon). Battre l'A1 de Louis, c'est pour l'honneur.
+- À Dubaï, le premier secteur est un détour chez Chital, le tailleur du vieux Dubaï : chaque costume sur mesure récupéré sur la route donne +5 s.
 
 ## Les 6 circuits
 
 1. **Collège de Marcq** : la rencontre en 5ᵉ.
-2. **Marina de Dubai** : les 2 ans de V.I.E.
+2. **Marina de Dubaï** : les 2 ans de V.I.E, détour chez Chital compris.
 3. **Golfe de Cargèse** : tous les étés en Corse.
 4. **Le Marathon** : 42,195 km dans les jambes.
 5. **La Route de la Moule** : l'export international, sous la pluie du Nord.
