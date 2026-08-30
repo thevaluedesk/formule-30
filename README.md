@@ -31,7 +31,7 @@ Chaque victoire débloque une carte souvenir sur le mur.
 
 ## La Capsule 2056
 
-Le soir de l'anniversaire, ouvrir « Capsule 2056 » et lancer le mode soirée : chacun répond aux 10 questions.
+Le soir de l'anniversaire, ouvrir « Capsule 2056 » et lancer le mode soirée : chacun répond aux 11 questions.
 Le bouton « Sceller » verrouille les réponses jusqu'au **30 août 2056** (impossible de les lire avant, le jeu refuse).
 
 Les réponses sont d'abord stockées dans le navigateur du téléphone utilisé. Pour les graver définitivement dans le jeu :

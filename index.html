@@ -425,7 +425,7 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
     <p class="chapo" id="compte-detail"></p>
     <div class="encart">
       <h3>Le pacte</h3>
-      <p>Chacun répond aux 10 questions ci-dessous. Les réponses sont scellées dans le jeu et resteront illisibles
+      <p>Chacun répond aux 11 questions ci-dessous. Les réponses sont scellées dans le jeu et resteront illisibles
       jusqu'au 30 août 2056. Ce jour-là, on ouvre cette page ensemble, on compare avec la réalité, et on compte les points.
       Une prédiction juste = 1 point. Le perdant offre la bouteille.</p>
     </div>
@@ -521,10 +521,11 @@ const CONFIG = {
     "Ta voiture en 2056 ?",
     "Tu vivras où ?",
     "Toujours une casquette Callaway sur la tête ?",
-    "On aura couru combien de marathons de plus ?",
+    "Qui perdra ses cheveux en premier ?",
     "Le voyage qu'on aura enfin fait ensemble ?",
     "Verstappen ou Sinner : lequel aura le plus marqué l'histoire ?",
     "Ton plus grand rêve réalisé d'ici 2056 ?",
+    "Une chose qu'on n'aura toujours pas faite à 60 ans ?",
     "Un message pour celui qui lira ça à 60 ans.",
   ],
 
@@ -1779,7 +1780,7 @@ function peuplerCapsule(){
   else{
     /* mode soirée : saisie des réponses */
     const enc=document.createElement('div');enc.className='encart';
-    enc.innerHTML='<h3>🎉 Mode soirée</h3><p>C\'est le moment : chacun répond aux 10 questions, sans se censurer. Une fois validées, les réponses sont scellées jusqu\'en 2056.</p>'
+    enc.innerHTML='<h3>🎉 Mode soirée</h3><p>C\'est le moment : chacun répond aux 11 questions, sans se censurer. Une fois validées, les réponses sont scellées jusqu\'en 2056.</p>'
       +'<p style="margin-top:8px;font-size:12px;color:#57508a">Côté coulisses : les réponses restent d\'abord sur cet appareil (rien ne part sur internet), puis le scellage génère un code que Louis grave dans le jeu pour les 30 prochaines années.</p>';
     zone.appendChild(enc);
     const form=document.createElement('div');
