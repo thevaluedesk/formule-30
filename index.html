@@ -1802,11 +1802,18 @@ function peuplerCapsule(){
       const enc2=document.createElement('div');enc2.className='encart';
       enc2.innerHTML='<h3>📦 À graver dans le marbre</h3><p>Vos réponses sont pour l\'instant stockées dans ce navigateur. Pour les sceller définitivement dans le jeu, envoie ce code à Louis : il le collera dans le fichier (CONFIG.capsuleScellee).</p>'
         +'<div class="code-scelle">'+enc64(JSON.stringify(save.capsuleLocale))+'</div>'
-        +'<button class="btn petit" id="btn-copier" style="margin-top:12px">Copier le code</button>';
+        +'<div class="grille-2" style="margin-top:12px"><button class="btn petit" id="btn-copier">Copier le code</button>'
+        +'<button class="btn petit ghost" id="btn-refaire">Refaire les réponses</button></div>';
       zone.appendChild(enc2);
       $('#btn-copier').addEventListener('click',()=>{
         const code=enc64(JSON.stringify(save.capsuleLocale));
         if(navigator.clipboard)navigator.clipboard.writeText(code).then(()=>toastGlobal('Code copié ! Envoie-le à Louis.'));
+      });
+      $('#btn-refaire').addEventListener('click',()=>{
+        if(confirm('Effacer les réponses enregistrées sur cet appareil et repartir du formulaire vierge ?')){
+          save.capsuleLocale=null;sauvegarder();peuplerCapsule();
+          toastGlobal('Réponses effacées, le formulaire est de nouveau vierge.');
+        }
       });
     }
     $('#note-capsule').textContent='Prédiction juste = 1 point. Le perdant offre la bouteille de 2056.';
