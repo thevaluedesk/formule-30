@@ -481,7 +481,7 @@ const CONFIG = {
     ['Copilote',          'En couple ✓',                        'En couple ✓'],
     ['Enfants à bord',    '0, pour l\'instant',                 '0, pour l\'instant'],
     ['Idole',             'Max Verstappen',                     'Jannik Sinner'],
-    ['Disciplines',       'F1, wakeboard, jet-ski',             'Tennis, marathon, wakeboard'],
+    ['Disciplines',       'Jet-ski, course à pied, Iron-Man, 🔞', 'Tennis, Padel, 🔞'],
     ['Uniforme officiel', 'Casquette Callaway',                 'Casquette Callaway'],
     ['Téléphone',         'iPhone, évidemment',                 'iPhone, évidemment'],
     ['Bande-son',         'Techno',                             'Techno'],
@@ -1075,10 +1075,13 @@ const RACE={
     this.camD=1/Math.tan((this.FOV/2)*Math.PI/180);
     this.playerZ=this.CAMH*this.camD;
     window.addEventListener('resize',()=>this.dimensionner());
+    if(window.visualViewport)window.visualViewport.addEventListener('resize',()=>this.dimensionner());
     this.dimensionner();
   },
   dimensionner(){
-    const dispo_w=window.innerWidth, dispo_h=window.innerHeight;
+    /* visualViewport : la seule mesure fiable dans les navigateurs mobiles et les lecteurs intégrés */
+    const vv=window.visualViewport;
+    const dispo_w=(vv&&vv.width)||window.innerWidth, dispo_h=(vv&&vv.height)||window.innerHeight;
     const ratio=16/9;
     let w=dispo_w, h=w/ratio;
     if(h>dispo_h){h=dispo_h;w=h*ratio;}
@@ -1550,10 +1553,10 @@ const RACE={
       const sy=Math.round(img.height*crop), sh=img.height-sy;
       const dw=W*0.22, dh=dw*(sh/img.width);
       const bounce=Math.sin(this.tick*30)* (this.vitesse/this.maxV)*2.2;
-      const px=W/2-dw/2+shakeX, py=H-20-dh+bounce+shakeY;
+      const px=W/2-dw/2+shakeX, py=H-46-dh+bounce+shakeY;
       /* ombre au sol pour ancrer la voiture sur la route */
       x.fillStyle='rgba(0,0,0,0.32)';
-      x.beginPath();x.ellipse(W/2+shakeX,H-15+shakeY,dw*0.55,9,0,0,Math.PI*2);x.fill();
+      x.beginPath();x.ellipse(W/2+shakeX,H-41+shakeY,dw*0.55,9,0,0,Math.PI*2);x.fill();
       x.save();
       const pench=(touches.gauche?-1:touches.droite?1:0)*0.05;
       x.translate(px+dw/2,py+dh/2);x.rotate(pench);
