@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>FORMULE 30 · Le Grand Prix de l'amitié</title>
+<title>FORMULE 30 · À consommer avant 2056</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>">
 <style>
 /* ============================================================
@@ -107,6 +107,12 @@ h2.neon{font-size:clamp(26px,6vw,44px);font-weight:900;font-style:italic;text-tr
 .damier{height:14px;width:100%;max-width:560px;margin:26px auto;opacity:.9;
   background:repeating-conic-gradient(#fff 0% 25%, #0a0a12 0% 50%) 0 0/14px 14px}
 .credit-boot{color:var(--gris);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-top:14px}
+.ligne-pegi{display:flex;align-items:center;justify-content:center;gap:13px;margin-top:30px}
+.badge-pegi{display:inline-flex;flex-direction:column;width:46px;border:2px solid #fff;border-radius:5px;overflow:hidden;
+  box-shadow:0 0 16px rgba(227,6,19,.4);flex:none}
+.badge-pegi b{background:#e30613;color:#fff;font-size:21px;font-weight:900;text-align:center;padding:8px 0 6px;line-height:1}
+.badge-pegi i{background:#0a0a12;color:#fff;font-style:normal;font-size:8px;letter-spacing:.3em;text-align:center;padding:4px 0 3px;text-indent:.3em}
+.mention-pegi{color:var(--gris);font-size:12.5px;letter-spacing:.04em;text-align:left;line-height:1.55}
 
 /* menu */
 .garage{display:flex;justify-content:center;align-items:flex-end;gap:38px;margin:16px 0 6px;min-height:88px}
@@ -298,10 +304,13 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
   <div class="contenu">
     <div class="damier"></div>
     <h1 class="titre-jeu">Formule 30</h1>
-    <div class="sous-titre">Le Grand Prix de l'amitié</div>
+    <div class="sous-titre">À consommer de préférence avant 2056</div>
     <div class="damier"></div>
     <p class="clignote" style="text-align:center;font-size:17px;letter-spacing:.3em;text-transform:uppercase;color:var(--or);margin-top:26px">Appuie pour démarrer</p>
-    <p class="credit-boot">© 2026 · Édition collector · 30 ans de Matthias</p>
+    <div class="ligne-pegi">
+      <span class="badge-pegi"><b>30</b><i>PEGI</i></span>
+      <span class="mention-pegi">Peut contenir des moules<br>et de la techno</span>
+    </div>
     <p id="note-statique" class="credit-boot" style="color:var(--rose);letter-spacing:.06em;text-transform:none">Si ce message reste affiché, cette vue est un aperçu sans JavaScript : ouvre le fichier dans Chrome ou Safari pour jouer.</p>
   </div>
 </section>

@@ -1,9 +1,10 @@
-# 🏎️ FORMULE 30 · Le Grand Prix de l'amitié
+# 🏎️ FORMULE 30 · À consommer de préférence avant 2056
 
 Jeu de course arcade créé par Louis pour les 30 ans de Matthias (30 août 2026).
 Une capsule temporelle jouable : 6 circuits qui rejouent 20 ans d'amitié, des fiches pilotes façon Apple,
 et des prédictions scellées jusqu'au 30 août 2056, jour de ses 60 ans.
 
+Classé PEGI 30. Peut contenir des moules et de la techno.
 Une amitié, ça se bonifie comme un bon vin. Rendez-vous en 2056.
 
 ## Jouer
