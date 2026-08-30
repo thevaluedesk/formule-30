@@ -158,7 +158,7 @@ h2.neon{font-size:clamp(26px,6vw,44px);font-weight:900;font-style:italic;text-tr
 #hud-vitesse{position:absolute;right:16px;bottom:14px;text-align:right}
 #hud-vitesse .v{font-size:40px;font-weight:900;font-style:italic;color:var(--blanc);text-shadow:0 0 14px rgba(34,230,255,.6);line-height:1}
 #hud-vitesse .u{font-size:11px;color:var(--gris);letter-spacing:.3em}
-#hud-prog{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);width:min(46vw,380px);height:8px;
+#hud-prog{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:min(46vw,380px);height:8px;
   border:1px solid #ffffff33;border-radius:99px;background:rgba(0,0,0,.45)}
 #hud-prog i{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--rose))}
 #hud-radio{position:absolute;left:16px;bottom:14px;max-width:min(52vw,420px);display:none;pointer-events:none}
@@ -294,7 +294,7 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
   #hud-radio .boite{padding:6px 9px}
   #hud-radio .msg{font-size:11px}
   #hud-radio .qui{font-size:8px}
-  #hud-prog{width:38vw;height:6px;bottom:10px}
+  #hud-prog{width:38vw;height:6px;top:54px}
   #btn-pause{top:8px;right:8px;padding:4px 9px;font-size:12px}
 }
 </style>
@@ -395,13 +395,13 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
   <div class="contenu">
     <button class="retour" data-go="menu">← Paddock</button>
     <h2 class="neon">Comparer les pilotes.</h2>
-    <p class="chapo">Deux modèles 2026. Mauvaise foi d'origine constructeur.</p>
+    <p class="chapo">Deux modèles 2026.<br>Jamais accidentés, souvent fatigués le dimanche.</p>
     <div class="compare-tete">
-      <div class="fiche-pilote m"><div id="avatar-m"></div><h3>Matthias 30 Pro Max</h3><div class="role">Export de moules · Q3</div></div>
+      <div class="fiche-pilote m"><div id="avatar-m"></div><h3>Matthias 30</h3><div class="role">Export de moules · Q3</div></div>
       <div class="fiche-pilote l"><div id="avatar-l"></div><h3>Louis 29</h3><div class="role">Business en ligne · A1</div></div>
     </div>
     <div id="lignes-compare"></div>
-    <p class="note-bas">Données constructeur relevées le 30 août 2026. Aucune réclamation acceptée avant 2056.</p>
+    <p class="note-bas">Données constructeur relevées le 30 août 2026.<br>Aucune réclamation acceptée avant 2056.</p>
   </div>
 </section>
 
@@ -1562,10 +1562,10 @@ const RACE={
       const sy=Math.round(img.height*crop), sh=img.height-sy;
       const dw=W*0.22, dh=dw*(sh/img.width);
       const bounce=Math.sin(this.tick*30)* (this.vitesse/this.maxV)*2.2;
-      const px=W/2-dw/2+shakeX, py=H-46-dh+bounce+shakeY;
+      const px=W/2-dw/2+shakeX, py=H-52-dh+bounce+shakeY;
       /* ombre au sol pour ancrer la voiture sur la route */
       x.fillStyle='rgba(0,0,0,0.32)';
-      x.beginPath();x.ellipse(W/2+shakeX,H-41+shakeY,dw*0.55,9,0,0,Math.PI*2);x.fill();
+      x.beginPath();x.ellipse(W/2+shakeX,H-47+shakeY,dw*0.55,9,0,0,Math.PI*2);x.fill();
       x.save();
       const pench=(touches.gauche?-1:touches.droite?1:0)*0.05;
       x.translate(px+dw/2,py+dh/2);x.rotate(pench);
