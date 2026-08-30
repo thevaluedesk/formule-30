@@ -14,9 +14,8 @@ aucun serveur, ça marche même hors ligne. La musique techno est générée par
 
 - **Ordinateur** : flèches ← → pour piloter, ↑ pour accélérer, ↓ pour freiner, Échap pour la pause.
 - **iPhone / mobile** : toucher la moitié gauche ou droite de l'écran pour tourner, l'accélération est automatique. En paysage c'est encore mieux.
-- Sortir de la piste fait perdre de la vitesse. Les casquettes Callaway sur la route donnent +3 s.
-- Chaque secteur validé donne +10 s (+14 s aux ravitos du marathon). Battre l'A1 de Louis, c'est pour l'honneur.
-- À Dubaï, le premier secteur est un détour chez Chital, le tailleur du vieux Dubaï : chaque costume sur mesure récupéré sur la route donne +5 s.
+- Sortir de la piste fait perdre de la vitesse. Le chrono enregistre le record de chaque circuit.
+- Battre l'A1 de Louis, c'est pour l'honneur. Les casquettes Callaway et, à Dubaï, les costumes de chez Chital se ramassent au passage.
 
 ## Les 6 circuits
 

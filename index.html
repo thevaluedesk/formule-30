@@ -153,7 +153,6 @@ h2.neon{font-size:clamp(26px,6vw,44px);font-weight:900;font-style:italic;text-tr
 #hud-temps{text-align:center;min-width:120px;line-height:1}
 #hud-chrono{font-size:30px;font-weight:800;color:var(--blanc);font-variant-numeric:tabular-nums}
 #hud-temps small{display:block;font-size:10px;color:var(--gris);letter-spacing:.18em;margin-top:4px;text-transform:uppercase}
-#hud-temps.alerte small{color:var(--rose);animation:blink .5s steps(1) infinite}
 #hud-pos{font-size:22px;font-weight:900;color:var(--or);text-align:right}
 #hud-pos .p1{color:#38f8a7}
 #hud-vitesse{position:absolute;right:16px;bottom:14px;text-align:right}
@@ -369,7 +368,7 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
     <div id="hud">
       <div class="hud-haut">
         <div class="hud-boite"><div id="hud-niveau">Circuit</div><div id="hud-annee">2026</div></div>
-        <div class="hud-boite"><div id="hud-temps"><span id="hud-chrono">0.0</span><small id="hud-restant">Temps restant</small></div></div>
+        <div class="hud-boite"><div id="hud-temps"><span id="hud-chrono">0.0</span><small>Chrono</small></div></div>
         <div class="hud-boite"><div id="hud-pos"><span class="p1">P1</span></div></div>
       </div>
       <div id="feux"><div class="feu"></div><div class="feu"></div><div class="feu"></div><div class="feu"></div><div class="feu"></div></div>
@@ -393,7 +392,7 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
         <h3>Briefing d'avant-course</h3>
         <p class="detail" id="tuto-directions"></p>
         <div class="tuto-zones" id="tuto-zones"><div>◀</div><div>▶</div></div>
-        <p class="detail">Rejoins l'arrivée avant la fin du <b>temps restant</b> : chaque secteur franchi et chaque casquette Callaway ramassée en rajoutent.</p>
+        <p class="detail">Rejoins l'arrivée le plus vite possible : le <b>chrono</b> enregistre ton record, et l'A1 de Louis ne t'attendra pas.</p>
         <button class="btn rose" id="btn-tuto-go">🏁 C'est parti</button>
       </div>
     </div>
@@ -1264,9 +1263,11 @@ const RACE={
     this.position=0;this.playerX=0;this.vitesse=0;this.secousse=0;this.tick=0;
     this.temps=NIVEAUX[iNiveau].temps;this.chrono=0;
     this.prochainCp=0;this.dernierBase=0;this.resultat=null;
+    /* remise à zéro du HUD : sinon la course précédente laisse ses valeurs pendant les feux */
     $('#hud-chrono').textContent='0.0';
-    $('#hud-restant').textContent='Temps restant '+Math.ceil(this.temps)+' s';
-    $('#hud-temps').classList.remove('alerte');
+    $('#hud-v').textContent='0';
+    $('#hud-prog-i').style.width='0%';
+    $('#hud-pos').innerHTML='<span class="p1">P1</span>';
     $('#hud-niveau').textContent=this.niveau.nom;
     $('#hud-annee').textContent=this.niveau.annee;
     $('#v-fin').classList.remove('actif');$('#v-pause').classList.remove('actif');$('#v-tuto').classList.remove('actif');
@@ -1326,8 +1327,7 @@ const RACE={
     }
 
     /* chrono */
-    this.temps-=dt;this.chrono+=dt;
-    if(this.temps<=0){this.temps=0;this.finir(false);return;}
+    this.chrono+=dt;
 
     const seg=this.segmentDe(this.position);
     const pctV=this.vitesse/this.maxV;
@@ -1362,9 +1362,8 @@ const RACE={
       for(const sp of s.sprites){
         if(sp.bonus&&!sp.pris&&Math.abs(this.playerX-sp.off)<0.42){
           sp.pris=true;
-          const gain=sp.gain||3;
-          this.temps+=gain;Audio30.bip(1320,0.12,'square',0.2);Audio30.bip(1760,0.15,'square',0.18);
-          radio('+'+gain+' s · '+(sp.toast||'Casquette Callaway !'));
+          Audio30.bip(1320,0.12,'square',0.2);Audio30.bip(1760,0.15,'square',0.18);
+          radio(sp.toast||'Casquette Callaway ramassée !');
         }
       }
     }
@@ -1393,8 +1392,7 @@ const RACE={
     /* checkpoints */
     const base=Math.floor(this.position/this.SEG);
     if(this.prochainCp<this.checkpoints.length && base>=this.checkpoints[this.prochainCp]){
-      const bonus=this.niveau.id==='marathon'?14:10;
-      this.temps+=bonus;this.prochainCp++;
+      this.prochainCp++;
       Audio30.bip(990,0.1,'square',0.2);Audio30.bip(1320,0.14,'square',0.2);
       if(this.prochainCp===1)radio(this.niveau.radioCp1||"Beau rythme. Continue comme ça, gestion.");
       if(this.prochainCp===2)radio(this.niveau.radioCp2||"Dernier secteur. Tout ce que tu as !");
@@ -1410,8 +1408,6 @@ const RACE={
     /* HUD */
     $('#hud-v').textContent=Math.round(pctV*330);
     $('#hud-chrono').textContent=this.chrono.toFixed(1);
-    $('#hud-restant').textContent='Temps restant '+Math.ceil(this.temps)+' s';
-    $('#hud-temps').classList.toggle('alerte',this.temps<10);
     $('#hud-prog-i').style.width=(this.position/this.longueurTotale*100).toFixed(1)+'%';
     const p1=this.position>this.rival.z;
     $('#hud-pos').innerHTML=p1?'<span class="p1">P1</span>':'P2';
