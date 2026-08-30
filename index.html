@@ -150,9 +150,10 @@ h2.neon{font-size:clamp(26px,6vw,44px);font-weight:900;font-style:italic;text-tr
 .hud-boite{background:rgba(5,2,18,.62);border:1px solid #ffffff22;border-radius:10px;padding:7px 12px;backdrop-filter:blur(3px)}
 #hud-niveau{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
 #hud-annee{font-size:10px;color:var(--gris);letter-spacing:.2em;margin-top:2px;text-transform:uppercase}
-#hud-temps{font-size:30px;font-weight:800;color:var(--blanc);text-align:center;min-width:120px;line-height:1}
-#hud-temps.alerte{color:var(--rose);animation:blink .5s steps(1) infinite}
-#hud-temps small{display:block;font-size:9px;color:var(--gris);letter-spacing:.28em;margin-top:3px}
+#hud-temps{text-align:center;min-width:120px;line-height:1}
+#hud-chrono{font-size:30px;font-weight:800;color:var(--blanc);font-variant-numeric:tabular-nums}
+#hud-temps small{display:block;font-size:10px;color:var(--gris);letter-spacing:.18em;margin-top:4px;text-transform:uppercase}
+#hud-temps.alerte small{color:var(--rose);animation:blink .5s steps(1) infinite}
 #hud-pos{font-size:22px;font-weight:900;color:var(--or);text-align:right}
 #hud-pos .p1{color:#38f8a7}
 #hud-vitesse{position:absolute;right:16px;bottom:14px;text-align:right}
@@ -165,8 +166,10 @@ h2.neon{font-size:clamp(26px,6vw,44px);font-weight:900;font-style:italic;text-tr
 #hud-radio .boite{background:rgba(5,2,18,.78);border:1px solid #ffffff26;border-left:4px solid var(--or);border-radius:10px;padding:9px 13px}
 #hud-radio .qui{font-size:10px;letter-spacing:.24em;color:var(--or);text-transform:uppercase}
 #hud-radio .msg{font-size:13.5px;margin-top:3px;color:var(--blanc)}
-#toast{position:absolute;left:50%;top:22%;transform:translateX(-50%);font-size:clamp(22px,4.5vw,40px);font-weight:900;font-style:italic;
-  color:var(--or);text-shadow:0 0 18px rgba(255,179,64,.8);display:none;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+#toast{position:absolute;left:50%;top:112px;transform:translateX(-50%);display:none;
+  max-width:min(82vw,540px);background:rgba(5,2,18,.85);border:1px solid rgba(255,179,64,.6);
+  border-radius:14px;padding:10px 20px;color:var(--or);font-weight:800;letter-spacing:.08em;
+  font-size:clamp(13px,2.4vw,20px);text-transform:uppercase;text-align:center;line-height:1.45;text-wrap:balance}
 
 /* feux de départ */
 #feux{position:absolute;left:50%;top:16%;transform:translateX(-50%);display:none;gap:14px}
@@ -283,8 +286,10 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
 @media (max-width:640px){
   .hud-haut{padding:8px 10px}
   .hud-boite{padding:4px 8px;border-radius:8px}
-  #hud-temps{font-size:19px;min-width:72px}
-  #hud-temps small{font-size:7px;letter-spacing:.18em}
+  #hud-temps{min-width:72px}
+  #hud-chrono{font-size:19px}
+  #hud-temps small{font-size:7px;letter-spacing:.14em}
+  #toast{top:82px;font-size:12px;padding:7px 14px}
   #hud-niveau{font-size:9.5px}
   #hud-annee{display:none}
   #hud-pos{font-size:15px}
@@ -365,7 +370,7 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
     <div id="hud">
       <div class="hud-haut">
         <div class="hud-boite"><div id="hud-niveau">Circuit</div><div id="hud-annee">2026</div></div>
-        <div class="hud-boite"><div id="hud-temps">60.0<small>Temps restant</small></div></div>
+        <div class="hud-boite"><div id="hud-temps"><span id="hud-chrono">0.0</span><small id="hud-restant">Temps restant</small></div></div>
         <div class="hud-boite"><div id="hud-pos"><span class="p1">P1</span></div></div>
       </div>
       <div id="feux"><div class="feu"></div><div class="feu"></div><div class="feu"></div><div class="feu"></div><div class="feu"></div></div>
@@ -1252,7 +1257,9 @@ const RACE={
     this.position=0;this.playerX=0;this.vitesse=0;this.secousse=0;this.tick=0;
     this.temps=NIVEAUX[iNiveau].temps;this.chrono=0;
     this.prochainCp=0;this.dernierBase=0;this.resultat=null;
-    $('#hud-temps').firstChild.textContent=this.temps.toFixed(1);
+    $('#hud-chrono').textContent='0.0';
+    $('#hud-restant').textContent='Temps restant '+Math.ceil(this.temps)+' s';
+    $('#hud-temps').classList.remove('alerte');
     this.etat='feux';this.tFeux=0;this.feuxAllumes=0;
     $('#hud-niveau').textContent=this.niveau.nom;
     $('#hud-annee').textContent=this.niveau.annee;
@@ -1381,9 +1388,9 @@ const RACE={
 
     /* HUD */
     $('#hud-v').textContent=Math.round(pctV*330);
-    const t=$('#hud-temps');
-    t.firstChild.textContent=this.temps.toFixed(1);
-    t.classList.toggle('alerte',this.temps<10);
+    $('#hud-chrono').textContent=this.chrono.toFixed(1);
+    $('#hud-restant').textContent='Temps restant '+Math.ceil(this.temps)+' s';
+    $('#hud-temps').classList.toggle('alerte',this.temps<10);
     $('#hud-prog-i').style.width=(this.position/this.longueurTotale*100).toFixed(1)+'%';
     const p1=this.position>this.rival.z;
     $('#hud-pos').innerHTML=p1?'<span class="p1">P1</span>':'P2';
