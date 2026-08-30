@@ -1557,9 +1557,9 @@ const RACE={
     /* voiture du joueur : cadrage caméra poursuite, façon OutRun.
        Le sprite HD montre beaucoup de toit : on coupe le haut pour rester sous l'horizon. */
     {
-      /* la Q3 HD, réglage de sa première intégration : plein cadre, aucun recadrage */
+      /* la Q3 HD, plein cadre, aucun recadrage. Taille réduite pour dégager la vue. */
       const img=SPR.q3.img;
-      const dw=W*0.26, dh=dw*(img.height/img.width);
+      const dw=W*0.19, dh=dw*(img.height/img.width);
       const bounce=Math.sin(this.tick*30)* (this.vitesse/this.maxV)*2.2;
       const px=W/2-dw/2+shakeX, py=H-24-dh+bounce+shakeY;
       x.save();
