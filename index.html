@@ -998,7 +998,16 @@ function chargerSpritesHD(){
     im.onload=()=>{
       if(SPR[k]&&SPR[k].img)SPR[k].img=im; /* véhicules : {img, worldW} */
       else SPR[k]=im;                      /* avatars : élément direct */
-      if(k==='q3')SPR.q3.hdCrop=0.30;      /* vue poursuite : on coupe le toit du sprite HD */
+      if(k==='q3'){
+        /* vue poursuite : le toit est prédécoupé ICI, une fois pour toutes.
+           iOS interprète mal le recadrage à la volée de drawImage, donc plus aucun
+           recadrage au moment du dessin : on fabrique une image déjà coupée. */
+        const coupe=Math.round(im.height*0.30);
+        const c=document.createElement('canvas');
+        c.width=im.width;c.height=im.height-coupe;
+        c.getContext('2d').drawImage(im,0,-coupe);
+        SPR.q3.imgCourse=c;
+      }
       majGarage();peuplerCompare();
     };
     im.src=src;
@@ -1558,10 +1567,8 @@ const RACE={
     /* voiture du joueur : cadrage caméra poursuite, façon OutRun.
        Le sprite HD montre beaucoup de toit : on coupe le haut pour rester sous l'horizon. */
     {
-      const img=SPR.q3.img;
-      const crop=SPR.q3.hdCrop||0;
-      const sy=Math.round(img.height*crop), sh=img.height-sy;
-      const dw=W*0.22, dh=dw*(sh/img.width);
+      const img=SPR.q3.imgCourse||SPR.q3.img;
+      const dw=W*0.22, dh=dw*(img.height/img.width);
       const bounce=Math.sin(this.tick*30)* (this.vitesse/this.maxV)*2.2;
       /* la voiture vit à 80 % de la hauteur : certains lecteurs mobiles rognent
          le bas de l'écran sans le dire, on ne s'approche plus jamais du bord */
@@ -1573,7 +1580,7 @@ const RACE={
       x.save();
       const pench=(touches.gauche?-1:touches.droite?1:0)*0.05;
       x.translate(px+dw/2,py+dh/2);x.rotate(pench);
-      x.drawImage(img,0,sy,img.width,sh,-dw/2,-dh/2,dw,dh);
+      x.drawImage(img,-dw/2,-dh/2,dw,dh);
       x.restore();
     }
   },
