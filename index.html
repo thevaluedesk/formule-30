@@ -978,6 +978,7 @@ function chargerSpritesHD(){
     im.onload=()=>{
       if(SPR[k]&&SPR[k].img)SPR[k].img=im; /* véhicules : {img, worldW} */
       else SPR[k]=im;                      /* avatars : élément direct */
+      if(k==='q3')SPR.q3.hdCrop=0.30;      /* vue poursuite : on coupe le toit du sprite HD */
       majGarage();peuplerCompare();
     };
     im.src=src;
@@ -1507,15 +1508,22 @@ const RACE={
       }
     }
 
-    /* voiture du joueur : taille d'écran fixe, façon OutRun */
+    /* voiture du joueur : cadrage caméra poursuite, façon OutRun.
+       Le sprite HD montre beaucoup de toit : on coupe le haut pour rester sous l'horizon. */
     {
-      const dw=W*0.26, dh=dw*(SPR.q3.img.height/SPR.q3.img.width);
+      const img=SPR.q3.img;
+      const crop=SPR.q3.hdCrop||0;
+      const sy=Math.round(img.height*crop), sh=img.height-sy;
+      const dw=W*0.22, dh=dw*(sh/img.width);
       const bounce=Math.sin(this.tick*30)* (this.vitesse/this.maxV)*2.2;
-      const px=W/2-dw/2+shakeX, py=H-24-dh+bounce+shakeY;
+      const px=W/2-dw/2+shakeX, py=H-20-dh+bounce+shakeY;
+      /* ombre au sol pour ancrer la voiture sur la route */
+      x.fillStyle='rgba(0,0,0,0.32)';
+      x.beginPath();x.ellipse(W/2+shakeX,H-15+shakeY,dw*0.55,9,0,0,Math.PI*2);x.fill();
       x.save();
       const pench=(touches.gauche?-1:touches.droite?1:0)*0.05;
       x.translate(px+dw/2,py+dh/2);x.rotate(pench);
-      x.drawImage(SPR.q3.img,-dw/2,-dh/2,dw,dh);
+      x.drawImage(img,0,sy,img.width,sh,-dw/2,-dh/2,dw,dh);
       x.restore();
     }
   },
