@@ -188,6 +188,10 @@ body.tactile-on .tactile{display:flex}
 .voile h3{font-size:clamp(24px,5vw,36px);font-weight:900;font-style:italic;text-transform:uppercase;
   background:linear-gradient(180deg,#fff,var(--or));-webkit-background-clip:text;background-clip:text;color:transparent}
 .voile .detail{color:var(--gris);font-size:14px;margin:10px 0;line-height:1.6}
+.voile .detail b{color:var(--blanc)}
+.tuto-zones{display:flex;gap:10px;margin:14px auto;max-width:320px}
+.tuto-zones div{flex:1;border:1px dashed var(--cyan);border-radius:12px;padding:16px 0;font-size:26px;color:var(--cyan);background:rgba(34,230,255,.06)}
+.btn.verrouille{opacity:.55}
 .voile .chrono{font-size:26px;font-weight:800;color:var(--cyan);margin:6px 0}
 
 /* carte souvenir */
@@ -340,7 +344,7 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
     <div class="chip-capsule" id="chip-capsule">⏳ Capsule scellée</div>
     <button class="btn" data-go="niveaux"><span class="em">🏁</span>Championnat</button>
     <button class="btn" data-go="compare"><span class="em">🆚</span>Fiches pilotes</button>
-    <button class="btn rose" data-go="capsule"><span class="em">🍾</span>Capsule 2056</button>
+    <button class="btn rose" data-go="capsule" id="btn-capsule"><span class="em">🍾</span>Capsule 2056</button>
     <button class="btn" data-go="cartes"><span class="em">🗂️</span>Mur des souvenirs</button>
     <button class="btn ghost petit" id="btn-son">🔊 Son : activé</button>
     <p class="pied">Fait main par <b>Louis</b> pour les 30 ans de <b>Matthias</b> · 30 août 2026<br>
@@ -382,6 +386,15 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
         <p class="detail">Le muret des stands t'attend.</p>
         <button class="btn" id="btn-reprendre">Reprendre</button>
         <button class="btn ghost" id="btn-abandon">Retour au paddock</button>
+      </div>
+    </div>
+    <div class="voile" id="v-tuto">
+      <div class="boite-v">
+        <h3>Briefing d'avant-course</h3>
+        <p class="detail" id="tuto-directions"></p>
+        <div class="tuto-zones" id="tuto-zones"><div>◀</div><div>▶</div></div>
+        <p class="detail">Rejoins l'arrivée avant la fin du <b>temps restant</b> : chaque secteur franchi et chaque casquette Callaway ramassée en rajoutent.</p>
+        <button class="btn rose" id="btn-tuto-go">🏁 C'est parti</button>
       </div>
     </div>
     <div class="voile" id="v-fin"><div class="boite-v" id="fin-contenu"></div></div>
@@ -1254,18 +1267,34 @@ const RACE={
     $('#hud-chrono').textContent='0.0';
     $('#hud-restant').textContent='Temps restant '+Math.ceil(this.temps)+' s';
     $('#hud-temps').classList.remove('alerte');
-    this.etat='feux';this.tFeux=0;this.feuxAllumes=0;
     $('#hud-niveau').textContent=this.niveau.nom;
     $('#hud-annee').textContent=this.niveau.annee;
-    $('#feux').style.display='flex';
-    $$('#feux .feu').forEach(f=>f.classList.remove('on'));
-    $('#v-fin').classList.remove('actif');$('#v-pause').classList.remove('actif');
+    $('#v-fin').classList.remove('actif');$('#v-pause').classList.remove('actif');$('#v-tuto').classList.remove('actif');
     montrerEcran('race');
     Audio30.demarrerMusique(this.niveau.bpm,this.niveau.root);
     Audio30.demarrerMoteur();
+    /* briefing avant la toute première course : comment tourner */
+    if(iNiveau===0&&save.debloques<2&&!DEBUG){
+      this.etat='tuto';
+      $('#feux').style.display='none';
+      const tactile='ontouchstart'in window;
+      $('#tuto-directions').innerHTML=tactile
+        ?'Pour tourner, touche la <b>moitié gauche</b> ou la <b>moitié droite</b> de l\'écran. L\'accélération est automatique.'
+        :'Pour tourner : flèches <b>←</b> et <b>→</b>. Accélère avec <b>↑</b>, freine avec <b>↓</b>.';
+      $('#tuto-zones').style.display=tactile?'flex':'none';
+      $('#v-tuto').classList.add('actif');
+    } else {
+      this.demarrerFeux();
+    }
+    if(!this.boucleActive){this.boucleActive=true;this.derniere=performance.now();requestAnimationFrame(t=>this.boucle(t));}
+  },
+
+  demarrerFeux(){
+    this.etat='feux';this.tFeux=0;this.feuxAllumes=0;
+    $('#feux').style.display='flex';
+    $$('#feux .feu').forEach(f=>f.classList.remove('on'));
     const aideTouches=('ontouchstart'in window)?"":" Flèches ← → pour piloter, ↑ pour accélérer.";
     radio( "Feux rouges. " + (this.iNiveau===5?"30 ans de préparation pour ce moment.":"Concentration, ça part dans 5.") + aideTouches );
-    if(!this.boucleActive){this.boucleActive=true;this.derniere=performance.now();requestAnimationFrame(t=>this.boucle(t));}
   },
 
   boucle(t){
@@ -1610,12 +1639,25 @@ function montrerEcran(id){
   $$('.screen').forEach(s=>s.classList.remove('active'));
   $('#s-'+id).classList.add('active');
   if(id!=='race'){Audio30.arreterMusique();Audio30.arreterMoteur();}
-  if(id==='menu'){majChipCapsule();}
+  if(id==='menu'){majChipCapsule();majMenuCapsule();}
   if(id==='niveaux')peuplerNiveaux();
   if(id==='cartes')peuplerCartes();
   if(id==='capsule')peuplerCapsule();
 }
-$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{Audio30.init();Audio30.reprendre();Audio30.bip(660,0.06);montrerEcran(b.dataset.go);}));
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{
+  Audio30.init();Audio30.reprendre();
+  if(b.dataset.go==='capsule'&&!save.champion&&!DEBUG){
+    Audio30.bip(220,0.12,'sawtooth',0.15);
+    toastGlobal('🔒 Termine les 6 circuits du championnat pour desceller la capsule !');
+    return;
+  }
+  Audio30.bip(660,0.06);montrerEcran(b.dataset.go);
+}));
+$('#btn-tuto-go').addEventListener('click',()=>{
+  Audio30.init();Audio30.reprendre();Audio30.bip(660,0.06);
+  $('#v-tuto').classList.remove('actif');
+  RACE.demarrerFeux();
+});
 
 function basculerPause(){
   if(RACE.etat==='course'||RACE.etat==='feux'){RACE.etatAvant=RACE.etat;RACE.etat='pause';$('#v-pause').classList.add('actif');Audio30.arreterMusique();}
@@ -1708,6 +1750,12 @@ function joursRestants(){
   return cible-new Date();
 }
 let compteTimer=null;
+function majMenuCapsule(){
+  const b=$('#btn-capsule');if(!b)return;
+  const ouvert=save.champion||DEBUG;
+  b.classList.toggle('verrouille',!ouvert);
+  b.querySelector('.em').textContent=ouvert?'🍾':'🔒';
+}
 function majChipCapsule(){
   const ms=joursRestants();
   const j=Math.max(0,Math.floor(ms/86400000));

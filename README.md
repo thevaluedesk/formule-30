@@ -31,6 +31,9 @@ Chaque victoire débloque une carte souvenir sur le mur.
 
 ## La Capsule 2056
 
+La capsule est verrouillée (🔒) tant que les 6 circuits du championnat ne sont pas gagnés : il faut la mériter.
+Le code `MOULE` tapé au clavier la déverrouille en secours.
+
 Le soir de l'anniversaire, ouvrir « Capsule 2056 » et lancer le mode soirée : chacun répond aux 11 questions.
 Le bouton « Sceller » verrouille les réponses jusqu'au **30 août 2056** (impossible de les lire avant, le jeu refuse).
 
