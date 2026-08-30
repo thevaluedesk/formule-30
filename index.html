@@ -996,18 +996,13 @@ function chargerSpritesHD(){
     if(!src)return;
     const im=new Image();
     im.onload=()=>{
+      /* la COURSE garde le pixel art d'origine (fiable sur tous les appareils) ;
+         la version détaillée sert au garage, aux menus et au comparateur */
+      if(k==='q3'&&SPR.q3&&SPR.q3.img&&!SPR.q3.imgCourse){
+        SPR.q3.imgCourse=SPR.q3.img;
+      }
       if(SPR[k]&&SPR[k].img)SPR[k].img=im; /* véhicules : {img, worldW} */
       else SPR[k]=im;                      /* avatars : élément direct */
-      if(k==='q3'){
-        /* vue poursuite : le toit est prédécoupé ICI, une fois pour toutes.
-           iOS interprète mal le recadrage à la volée de drawImage, donc plus aucun
-           recadrage au moment du dessin : on fabrique une image déjà coupée. */
-        const coupe=Math.round(im.height*0.30);
-        const c=document.createElement('canvas');
-        c.width=im.width;c.height=im.height-coupe;
-        c.getContext('2d').drawImage(im,0,-coupe);
-        SPR.q3.imgCourse=c;
-      }
       majGarage();peuplerCompare();
     };
     im.src=src;
@@ -1567,16 +1562,12 @@ const RACE={
     /* voiture du joueur : cadrage caméra poursuite, façon OutRun.
        Le sprite HD montre beaucoup de toit : on coupe le haut pour rester sous l'horizon. */
     {
+      /* dessin d'origine de la première version : simple et fiable partout */
       const img=SPR.q3.imgCourse||SPR.q3.img;
-      const dw=W*0.22, dh=dw*(img.height/img.width);
+      const sc=this.camD/this.playerZ;
+      const dw=SPR.q3.worldW*sc*W/2, dh=dw*(img.height/img.width);
       const bounce=Math.sin(this.tick*30)* (this.vitesse/this.maxV)*2.2;
-      /* la voiture vit à 80 % de la hauteur : certains lecteurs mobiles rognent
-         le bas de l'écran sans le dire, on ne s'approche plus jamais du bord */
-      const basVoiture=Math.round(H*0.80);
-      const px=W/2-dw/2+shakeX, py=basVoiture-dh+bounce+shakeY;
-      /* ombre au sol pour ancrer la voiture sur la route */
-      x.fillStyle='rgba(0,0,0,0.32)';
-      x.beginPath();x.ellipse(W/2+shakeX,basVoiture+5+shakeY,dw*0.55,9,0,0,Math.PI*2);x.fill();
+      const px=W/2-dw/2+shakeX, py=H-24-dh+bounce+shakeY;
       x.save();
       const pench=(touches.gauche?-1:touches.droite?1:0)*0.05;
       x.translate(px+dw/2,py+dh/2);x.rotate(pench);
