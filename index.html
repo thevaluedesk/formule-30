@@ -996,11 +996,6 @@ function chargerSpritesHD(){
     if(!src)return;
     const im=new Image();
     im.onload=()=>{
-      /* la COURSE garde le pixel art d'origine (fiable sur tous les appareils) ;
-         la version détaillée sert au garage, aux menus et au comparateur */
-      if(k==='q3'&&SPR.q3&&SPR.q3.img&&!SPR.q3.imgCourse){
-        SPR.q3.imgCourse=SPR.q3.img;
-      }
       if(SPR[k]&&SPR[k].img)SPR[k].img=im; /* véhicules : {img, worldW} */
       else SPR[k]=im;                      /* avatars : élément direct */
       majGarage();peuplerCompare();
@@ -1562,10 +1557,9 @@ const RACE={
     /* voiture du joueur : cadrage caméra poursuite, façon OutRun.
        Le sprite HD montre beaucoup de toit : on coupe le haut pour rester sous l'horizon. */
     {
-      /* dessin d'origine de la première version : simple et fiable partout */
-      const img=SPR.q3.imgCourse||SPR.q3.img;
-      const sc=this.camD/this.playerZ;
-      const dw=SPR.q3.worldW*sc*W/2, dh=dw*(img.height/img.width);
+      /* la Q3 HD, réglage de sa première intégration : plein cadre, aucun recadrage */
+      const img=SPR.q3.img;
+      const dw=W*0.26, dh=dw*(img.height/img.width);
       const bounce=Math.sin(this.tick*30)* (this.vitesse/this.maxV)*2.2;
       const px=W/2-dw/2+shakeX, py=H-24-dh+bounce+shakeY;
       x.save();
