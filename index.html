@@ -166,10 +166,6 @@ h2.neon{font-size:clamp(26px,6vw,44px);font-weight:900;font-style:italic;text-tr
 #hud-radio .boite{background:rgba(5,2,18,.78);border:1px solid #ffffff26;border-left:4px solid var(--or);border-radius:10px;padding:9px 13px}
 #hud-radio .qui{font-size:10px;letter-spacing:.24em;color:var(--or);text-transform:uppercase}
 #hud-radio .msg{font-size:13.5px;margin-top:3px;color:var(--blanc)}
-#toast{position:absolute;left:50%;top:112px;transform:translateX(-50%);display:none;
-  max-width:min(82vw,540px);background:rgba(5,2,18,.85);border:1px solid rgba(255,179,64,.6);
-  border-radius:14px;padding:10px 20px;color:var(--or);font-weight:800;letter-spacing:.08em;
-  font-size:clamp(13px,2.4vw,20px);text-transform:uppercase;text-align:center;line-height:1.45;text-wrap:balance}
 
 /* feux de départ */
 #feux{position:absolute;left:50%;top:16%;transform:translateX(-50%);display:none;gap:14px}
@@ -289,7 +285,6 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
   #hud-temps{min-width:72px}
   #hud-chrono{font-size:19px}
   #hud-temps small{font-size:7px;letter-spacing:.14em}
-  #toast{top:82px;font-size:12px;padding:7px 14px}
   #hud-niveau{font-size:9.5px}
   #hud-annee{display:none}
   #hud-pos{font-size:15px}
@@ -374,7 +369,6 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
         <div class="hud-boite"><div id="hud-pos"><span class="p1">P1</span></div></div>
       </div>
       <div id="feux"><div class="feu"></div><div class="feu"></div><div class="feu"></div><div class="feu"></div><div class="feu"></div></div>
-      <div id="toast"></div>
       <div id="hud-radio"><div class="boite"><div class="qui">📻 Radio · Stand Q3</div><div class="msg" id="radio-msg"></div></div></div>
       <div id="hud-vitesse"><div class="v" id="hud-v">0</div><div class="u">km/h</div></div>
       <div id="hud-prog"><i id="hud-prog-i"></i></div>
@@ -1341,7 +1335,7 @@ const RACE={
           sp.pris=true;
           const gain=sp.gain||3;
           this.temps+=gain;Audio30.bip(1320,0.12,'square',0.2);Audio30.bip(1760,0.15,'square',0.18);
-          toastCourse('+'+gain+' s · '+(sp.toast||'Casquette Callaway !'));
+          radio('+'+gain+' s · '+(sp.toast||'Casquette Callaway !'));
         }
       }
     }
@@ -1373,8 +1367,6 @@ const RACE={
       const bonus=this.niveau.id==='marathon'?14:10;
       this.temps+=bonus;this.prochainCp++;
       Audio30.bip(990,0.1,'square',0.2);Audio30.bip(1320,0.14,'square',0.2);
-      const etiquette=(this.prochainCp===1&&this.niveau.toastCp1)||(this.niveau.id==='marathon'?'RAVITO !':'SECTEUR VALIDÉ !');
-      toastCourse(etiquette+' +'+bonus+' s');
       if(this.prochainCp===1)radio(this.niveau.radioCp1||"Beau rythme. Continue comme ça, gestion.");
       if(this.prochainCp===2)radio(this.niveau.radioCp2||"Dernier secteur. Tout ce que tu as !");
     }
@@ -1634,8 +1626,7 @@ $('#btn-reprendre').addEventListener('click',basculerPause);
 $('#btn-abandon').addEventListener('click',()=>{$('#v-pause').classList.remove('actif');RACE.etat='off';montrerEcran('menu');});
 
 /* toasts + radio */
-let toastTimer=null,radioTimer=null;
-function toastCourse(msg){const t=$('#toast');t.textContent=msg;t.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.style.display='none',1600);}
+let radioTimer=null;
 function radio(msg){const r=$('#hud-radio');$('#radio-msg').textContent=msg;r.style.display='block';clearTimeout(radioTimer);radioTimer=setTimeout(()=>r.style.display='none',4200);}
 function toastGlobal(msg){const t=$('#toast-global');t.textContent=msg;t.classList.add('actif');setTimeout(()=>t.classList.remove('actif'),3400);}
 
