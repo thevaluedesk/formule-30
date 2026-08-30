@@ -262,10 +262,9 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
 .mot-anniv{color:var(--or);text-align:center;margin:16px auto 6px;max-width:400px}
 .mot-anniv p{font-size:14.5px;line-height:1.75;text-wrap:balance;margin-top:10px}
 .mot-anniv .signature{font-style:italic;font-size:15px;color:var(--blanc);margin-top:12px;letter-spacing:.08em}
-#astuce-paysage{display:none;position:absolute;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);
-  color:var(--gris);font-size:12.5px;background:rgba(5,2,18,.7);border:1px solid var(--bord);border-radius:999px;padding:8px 16px;
-  white-space:nowrap;z-index:9;pointer-events:none}
-@media (orientation:portrait){#astuce-paysage{display:block}}
+@media (max-width:640px){
+  #toast-global{bottom:104px}
+}
 @media (max-width:520px){
   .compte .bloc{min-width:72px}
 }
@@ -398,7 +397,6 @@ textarea.saisie:focus{outline:none;border-color:var(--cyan)}
     </div>
     <div class="voile" id="v-fin"><div class="boite-v" id="fin-contenu"></div></div>
   </div>
-  <div id="astuce-paysage">🔄 Tourne ton iPhone : c'est encore mieux en paysage</div>
 </section>
 
 <!-- COMPARATEUR -->
